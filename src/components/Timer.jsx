@@ -26,6 +26,9 @@ function Timer() {
   };
 
   const handleStart = () => {
+    // let a = new Date();
+    // let thistime = a.getTime();
+    // console.log(thistime);
     console.log(timerOn);
     setTimerOn(true);
   };
@@ -37,9 +40,13 @@ function Timer() {
   useEffect(() => {
     if (timerOn) {
       const interval = setInterval(() => {
+        // let a = new Date();
+        // let thistime = a.getTime();
+        // console.log(thistime);
         setTime(time + 1);
-        formatTime(time);
+        // console.log(thistime);
       }, 1000);
+      formatTime(time);
 
       return () => clearInterval(interval);
     }
@@ -48,7 +55,9 @@ function Timer() {
   return (
     <div>
       <h1>{timeDisplay}</h1>
-      <button onClick={timerOn ? handlePause : handleStart}>
+      <button
+        onClick={timerOn ? handlePause : handleStart}
+        style={{ margin: "0 10px 0 0" }}>
         {timerOn ? "Pause" : time === 0 ? "Start" : "Resume"}
       </button>
       <button onClick={resetTimer}>Reset</button>

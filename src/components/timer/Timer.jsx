@@ -1,35 +1,20 @@
 import { useEffect } from "react";
 import { useState } from "react";
+import { formatTime } from "./FormatTime.jsx";
+import { SaveTime } from "./SaveTime.jsx";
 
-function Timer() {
+export function Timer({ title }) {
   const [time, setTime] = useState(0);
   const [timeDisplay, setTimeDisplay] = useState("00:00:00");
   const [timerOn, setTimerOn] = useState(false);
-
-  const formatTime = (time) => {
-    let hours = Math.floor(time / 3600);
-    let minutes = Math.floor((time - hours * 3600) / 60);
-    let seconds = time - hours * 3600 - minutes * 60;
-
-    if (hours < 10) hours = "0" + hours;
-    if (minutes < 10) minutes = "0" + minutes;
-    if (seconds < 10) seconds = "0" + seconds;
-
-    setTimeDisplay(`${hours}:${minutes}:${seconds}`);
-  };
 
   const resetTimer = () => {
     setTimerOn(false);
     setTime(0);
     setTimeDisplay("00:00:00");
-    console.log(time);
   };
 
   const handleStart = () => {
-    // let a = new Date();
-    // let thistime = a.getTime();
-    // console.log(thistime);
-    console.log(timerOn);
     setTimerOn(true);
   };
 
@@ -46,7 +31,7 @@ function Timer() {
         setTime(time + 1);
         // console.log(thistime);
       }, 1000);
-      formatTime(time);
+      setTimeDisplay(formatTime(time));
 
       return () => clearInterval(interval);
     }
@@ -54,15 +39,17 @@ function Timer() {
 
   return (
     <div>
+      <p>This is a timer!</p>
       <h1>{timeDisplay}</h1>
       <button
         onClick={timerOn ? handlePause : handleStart}
         style={{ margin: "0 10px 0 0" }}>
         {timerOn ? "Pause" : time === 0 ? "Start" : "Resume"}
       </button>
-      <button onClick={resetTimer}>Reset</button>
+      <button onClick={resetTimer} style={{ margin: "0 10px 0 0" }}>
+        Reset
+      </button>
+      <SaveTime title={title} time={time} />
     </div>
   );
 }
-
-export default Timer;

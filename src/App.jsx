@@ -1,12 +1,11 @@
 import "./App.css";
-import Timer from "./components/Timer.jsx";
+import { ProjectContainer } from "./components/projects/ProjectContainer";
 
 function App() {
   return (
     <>
       <div className="App">
-        <p>This is my vite app!</p>
-        <Timer />
+        <ProjectContainer />
       </div>
     </>
   );

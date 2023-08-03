@@ -16,16 +16,18 @@ export function ProjectInput({ handleName }) {
 
   return (
     <form>
-      <label htmlFor="projectName" style={{ margin: "0 10px 0 0" }}>
-        Project Name
-      </label>
       <input
         type="text"
         id="projectName"
         name="projectName"
         onChange={handleChange}
+        placeholder="Name your proyect"
+        className="border border-gray-300 rounded-lg p-2 m-2"
       />
-      <button onClick={handleSubmit} type="submit">
+      <button
+        className="btn-primary bg-blue-500"
+        onClick={handleSubmit}
+        type="submit">
         Create
       </button>
     </form>

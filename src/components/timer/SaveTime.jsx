@@ -1,10 +1,17 @@
 import { useProjectContext } from "../../hooks/useProjectContext.jsx";
 
-export function SaveTime({ time, title }) {
-  const { pushTimes } = useProjectContext();
+export function SaveTime({ title }) {
+  const { pushTimes, resetTimer, setLoading } = useProjectContext();
+
   const handleSave = () => {
-    console.log(title);
-    pushTimes(time, title);
+    pushTimes(title);
+    resetTimer();
+    setLoading(true);
   };
-  return <button onClick={handleSave}>Save</button>;
+
+  return (
+    <button className="btn-primary bg-red-500" onClick={handleSave}>
+      Save
+    </button>
+  );
 }

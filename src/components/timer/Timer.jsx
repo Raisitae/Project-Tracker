@@ -1,18 +1,29 @@
 import { useEffect } from "react";
-import { useState } from "react";
 import { formatTime } from "./FormatTime.jsx";
 import { SaveTime } from "./SaveTime.jsx";
+import { useProjectContext } from "../../hooks/useProjectContext.jsx";
 
 export function Timer({ title }) {
-  const [time, setTime] = useState(0);
-  const [timeDisplay, setTimeDisplay] = useState("00:00:00");
-  const [timerOn, setTimerOn] = useState(false);
+  const {
+    resetTimer,
+    time,
+    setTime,
+    timerOn,
+    setTimerOn,
+    setTimeDisplay,
+    timeDisplay,
+  } = useProjectContext();
 
-  const resetTimer = () => {
-    setTimerOn(false);
-    setTime(0);
-    setTimeDisplay("00:00:00");
-  };
+  useEffect(() => {
+    if (timerOn) {
+      const interval = setInterval(() => {
+        setTime(time + 1);
+      }, 1000);
+      setTimeDisplay(formatTime(time));
+
+      return () => clearInterval(interval);
+    }
+  }, [timerOn, time]);
 
   const handleStart = () => {
     setTimerOn(true);
@@ -22,33 +33,24 @@ export function Timer({ title }) {
     setTimerOn(false);
   };
 
-  useEffect(() => {
-    if (timerOn) {
-      const interval = setInterval(() => {
-        // let a = new Date();
-        // let thistime = a.getTime();
-        // console.log(thistime);
-        setTime(time + 1);
-        // console.log(thistime);
-      }, 1000);
-      setTimeDisplay(formatTime(time));
-
-      return () => clearInterval(interval);
-    }
-  }, [timerOn, time]);
-
   return (
     <div>
-      <p>This is a timer!</p>
-      <h1>{timeDisplay}</h1>
+      <h1 className="text-6xl font-bold tracking-wider font-mono text-black sm:text-6xl my-8">
+        {timeDisplay}
+      </h1>
       <button
+        className="btn-primary  bg-blue-500"
         onClick={timerOn ? handlePause : handleStart}
         style={{ margin: "0 10px 0 0" }}>
         {timerOn ? "Pause" : time === 0 ? "Start" : "Resume"}
       </button>
-      <button onClick={resetTimer} style={{ margin: "0 10px 0 0" }}>
+      <button
+        className="btn-primary bg-blue-500"
+        onClick={resetTimer}
+        style={{ margin: "0 10px 0 0" }}>
         Reset
       </button>
+
       <SaveTime title={title} time={time} />
     </div>
   );

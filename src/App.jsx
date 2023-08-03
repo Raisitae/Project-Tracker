@@ -1,13 +1,15 @@
 import "./App.css";
 import { ProjectContainer } from "./components/projects/ProjectContainer";
+import { NavbarContainer } from "./components/menu/NavbarContainer";
 
 function App() {
   return (
-    <>
-      <div className="App">
+    <div id="root">
+      <div className="main-page max-w-full">
+        <NavbarContainer />
         <ProjectContainer />
       </div>
-    </>
+    </div>
   );
 }
 

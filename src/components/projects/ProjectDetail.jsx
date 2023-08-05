@@ -5,20 +5,37 @@ import { useProjectContext } from "../../hooks/useProjectContext.jsx";
 
 export function ProjectDetail() {
   const [name, setName] = useState("");
+  const [sum, setSum] = useState(0);
   const handleName = (name) => {
     setName(name);
   };
-  const { loading, times, getTimes, setLoading, formatTime } =
+  const { loading, times, getTimesBack, formatTime, user } =
     useProjectContext();
 
+  const [timeProject, setTimeProject] = useState([]);
   useEffect(() => {
-    console.log(loading);
-    console.log(times);
+    if ((loading === false) & (user !== "")) {
+      setTimeProject([]);
+      console.log(loading);
+      console.log(times);
+      mapTimes();
+      sumTimes();
+    }
   }, [loading]);
 
-  const handleTimes = () => {
-    setLoading(true);
-    getTimes();
+  const mapTimes = () => {
+    times.map((time) => {
+      timeProject.push(time.time);
+    });
+    console.log(timeProject);
+  };
+
+  const sumTimes = () => {
+    let adding = 0;
+    timeProject.forEach((time) => {
+      adding += time;
+    });
+    setSum(formatTime(adding));
   };
 
   return (
@@ -31,21 +48,25 @@ export function ProjectDetail() {
       <Timer title={name} />
       <button
         className="btn-primary bg-blue-500"
-        onClick={handleTimes}
+        onClick={getTimesBack}
         style={{ margin: "0 10px 0 0" }}>
         get times
       </button>
       {loading ? (
         <h1>loading</h1>
       ) : (
-        times.map((time) => {
-          return (
-            <div key={time.id}>
-              <h1>{time.title ? time.title : "Sin titulo"}</h1>
-              <h1>{formatTime(time.time)}</h1>
-            </div>
-          );
-        })
+        <div>
+          <h1>Previous times</h1>
+          {times.map((time) => {
+            return (
+              <div key={time.id}>
+                <p>{formatTime(time.time)}</p>
+              </div>
+            );
+          })}
+          <h1>Total time</h1>
+          <p>{sum}</p>
+        </div>
       )}
     </div>
   );

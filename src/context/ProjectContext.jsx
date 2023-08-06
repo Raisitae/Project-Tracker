@@ -13,24 +13,39 @@ function ProviderProject({ children }) {
   const { user } = useUserContext();
   const { times, project, setProject } = useTimerContext();
 
-  const getProjects = async () => {
+  const getProjects = () => {
     const arrayProjects = [];
     const projectRef = collection(db, user);
     onSnapshot(projectRef, (snapshot) => {
       snapshot.docs.map((doc) => {
-        return arrayProjects.push({
+        return console.log({
           id: doc.id,
           title: doc.data().title,
           time: doc.data().time,
           date: doc.data().date,
         });
+        // arrayProjects.push({
+        //   id: doc.id,
+        //   title: doc.data().title,
+        //   time: doc.data().time,
+        //   date: doc.data().date,
+        // });
       });
+      console.log(arrayProjects);
       arrayProjects.sort((a, b) => a.title.localeCompare(b.title));
       setProjects(arrayProjects);
       console.log(projects);
       setLoading(false);
     });
   };
+  //this functions should only be called when we load the app for the first time
+  //or when we push a time to the database
+  //in order to reduce the amonut of times we call the database
+  // then we should refer to projects and map the state to get the projects
+  // or we could use local storage to save the projects.
+  // maybe do a function that gets the projects and then saves them to local storage if the user is logged
+  // and we only call the database when push a new timer or when the user logs in
+  // ill have to check tmr. Also this funtion is not working atm
 
   const selectProject = (title) => {
     setProject(title);
@@ -50,11 +65,11 @@ function ProviderProject({ children }) {
 
   useEffect(() => {
     handleCallback();
-    if ((user !== "") & (project !== "")) {
+    if (user !== "") {
       getProjects();
       //make callback function
     }
-  }, [user, project, handleCallback]);
+  }, [user, loading]);
 
   const value = {
     loading,

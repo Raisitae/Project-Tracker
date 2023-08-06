@@ -1,6 +1,4 @@
 import "./App.css";
-import { ProjectContainer } from "./components/projects/ProjectContainer";
-import { NavbarContainer } from "./components/menu/NavbarContainer";
 import { useUserContext } from "./hooks/useUserContext";
 import { LoginView } from "./views/LoginView";
 import { useEffect } from "react";
@@ -16,12 +14,7 @@ function App() {
   }, []);
 
   return (
-    <div id="root">
-      <div className="main-page max-w-full">
-        <NavbarContainer />
-        {user === "" ? <LoginView /> : <MainView />}
-      </div>
-    </div>
+    <div className="root">{user === "" ? <LoginView /> : <MainView />}</div>
   );
 }
 

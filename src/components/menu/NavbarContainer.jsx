@@ -1,10 +1,12 @@
 import { useEffect } from "react";
 import { useProjectContext } from "../../hooks/useProjectContext.jsx";
 import { useUserContext } from "../../hooks/useUserContext.jsx";
+import { useTimerContext } from "../../hooks/useTimerContext.jsx";
 
 export function NavbarContainer() {
-  const { loading, projects, getProjects, selectProject } = useProjectContext();
+  const { loading, projects, selectProject } = useProjectContext();
   const { user } = useUserContext();
+  const { setProject } = useTimerContext();
 
   useEffect(() => {
     if (!loading & (user !== "")) {
@@ -38,8 +40,12 @@ export function NavbarContainer() {
           })}
         </div>
       )}
-      <button className="btn-primary bg-blue-500" onClick={getProjects}>
-        try projects
+      <button
+        className="btn-primary bg-blue-500"
+        onClick={() => {
+          setProject("");
+        }}>
+        Add a project
       </button>
     </div>
   );

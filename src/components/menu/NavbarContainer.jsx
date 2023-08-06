@@ -1,44 +1,46 @@
 import { useEffect } from "react";
 import { useProjectContext } from "../../hooks/useProjectContext.jsx";
+import { useUserContext } from "../../hooks/useUserContext.jsx";
 
 export function NavbarContainer() {
-  const { loading, times, user, handleProject } = useProjectContext();
+  const { loading, projects, getProjects, selectProject } = useProjectContext();
+  const { user } = useUserContext();
 
   useEffect(() => {
     if (!loading & (user !== "")) {
       console.log(loading);
-      console.log(times);
+      console.log(projects);
     }
-  }, [loading]);
+  }, [loading, projects]);
 
   const handleClick = (e) => {
-    handleProject(e);
+    selectProject(e);
   };
-
-  const mapTimes = times.map((time) => {
-    return (
-      <div key={time.id}>
-        <button
-          onClick={() => {
-            handleClick(time.title);
-          }}
-          className="project-button">
-          {time.title ? time.title : "Sin titulo"}
-        </button>
-      </div>
-    );
-  });
 
   return (
     <div className="nav-bar">
-      {user === "" ? (
+      {projects == undefined ? (
         <h1>login</h1>
       ) : (
         <div>
-          <p className="text-slate-200 font-semibold">Welcome {user}</p>
-          {mapTimes}
+          {projects.map((project) => {
+            return (
+              <div key={project.id}>
+                <button
+                  onClick={() => {
+                    handleClick(project.title);
+                  }}
+                  className="project-button">
+                  {project.title ? project.title : "Sin titulo"}
+                </button>
+              </div>
+            );
+          })}
         </div>
       )}
+      <button className="btn-primary bg-blue-500" onClick={getProjects}>
+        try projects
+      </button>
     </div>
   );
 }

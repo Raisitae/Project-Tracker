@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { formatTime } from "./FormatTime.jsx";
 import { SaveTime } from "./SaveTime.jsx";
-import { useProjectContext } from "../../hooks/useProjectContext.jsx";
+import { useTimerContext } from "../../hooks/useTimerContext.jsx";
 
 export function Timer({ title }) {
   const {
@@ -12,7 +12,7 @@ export function Timer({ title }) {
     setTimerOn,
     setTimeDisplay,
     timeDisplay,
-  } = useProjectContext();
+  } = useTimerContext();
 
   useEffect(() => {
     if (timerOn) {

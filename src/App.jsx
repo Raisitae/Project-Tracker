@@ -1,16 +1,15 @@
 import "./App.css";
 import { ProjectContainer } from "./components/projects/ProjectContainer";
 import { NavbarContainer } from "./components/menu/NavbarContainer";
-import { useProjectContext } from "./hooks/useProjectContext";
+import { useUserContext } from "./hooks/useUserContext";
 import { LoginView } from "./views/LoginView";
 import { useEffect } from "react";
+import { MainView } from "./views/MainView";
 function App() {
-  const { user, handleUser } = useProjectContext();
+  const { user, handleUser } = useUserContext();
 
   useEffect(() => {
     const userLocal = JSON.parse(localStorage.getItem("user"));
-    console.log(userLocal);
-
     if ((userLocal != "") & (userLocal != null)) {
       handleUser(userLocal);
     }
@@ -20,7 +19,7 @@ function App() {
     <div id="root">
       <div className="main-page max-w-full">
         <NavbarContainer />
-        {user === "" ? <LoginView /> : <ProjectContainer />}
+        {user === "" ? <LoginView /> : <MainView />}
       </div>
     </div>
   );

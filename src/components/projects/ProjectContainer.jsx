@@ -1,11 +1,24 @@
 import { ProjectDetail } from "./ProjectDetail.jsx";
-import { Userinfo } from "../Userinfo/Userinfo.jsx";
+import { ProjectCreate } from "./ProjectCreate.jsx";
+import { useCallback, useEffect } from "react";
+import { useTimerContext } from "../../hooks/useTimerContext.jsx";
 
 export function ProjectContainer() {
-  return (
-    <div className="project-container">
-      <Userinfo />
-      <ProjectDetail />
-    </div>
-  );
+  const { project } = useTimerContext();
+
+  const projectListener = useCallback(() => {
+    if (project !== undefined && project !== "") {
+      console.log(project);
+
+      return <ProjectDetail />;
+    } else {
+      return <ProjectCreate />;
+    }
+  }, [project]);
+
+  useEffect(() => {
+    console.log(project);
+  }, [project]);
+
+  return <div>{projectListener()}</div>;
 }

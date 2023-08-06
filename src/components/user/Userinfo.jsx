@@ -1,7 +1,7 @@
-import { useProjectContext } from "../../hooks/useProjectContext.jsx";
+import { useUserContext } from "../../hooks/useUserContext.jsx";
 
 export function Userinfo() {
-  const { user, handleUser } = useProjectContext();
+  const { user, handleUser } = useUserContext();
 
   const handleSubmit = (e) => {
     e.preventDefault();

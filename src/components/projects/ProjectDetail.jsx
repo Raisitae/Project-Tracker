@@ -1,23 +1,22 @@
 import { ProjectInput } from "./ProjectInput";
 import { Timer } from "../timer/Timer";
 import { useState, useEffect } from "react";
-import { useProjectContext } from "../../hooks/useProjectContext.jsx";
+
+import { useTimerContext } from "../../hooks/useTimerContext.jsx";
 
 export function ProjectDetail() {
   const [name, setName] = useState("");
   const [sum, setSum] = useState(0);
-  const handleName = (name) => {
-    setName(name);
-  };
-  const { loading, times, getTimesBack, formatTime, user } =
-    useProjectContext();
+  const { loading, times, getTimesBack, formatTime } = useTimerContext();
+  const { project } = useTimerContext();
 
   const [timeProject, setTimeProject] = useState([]);
+
   useEffect(() => {
-    if ((loading === false) & (user !== "")) {
+    if ((loading == false) & (project !== undefined)) {
       setTimeProject([]);
       console.log(loading);
-      console.log(times);
+
       mapTimes();
       sumTimes();
     }
@@ -40,11 +39,7 @@ export function ProjectDetail() {
 
   return (
     <div>
-      {name !== "" ? (
-        <h3 className="text-xl tracking-wide">{name}</h3>
-      ) : (
-        <ProjectInput handleName={handleName} />
-      )}
+      <h1 className="text-lg">this is {project}</h1>
       <Timer title={name} />
       <button
         className="btn-primary bg-blue-500"

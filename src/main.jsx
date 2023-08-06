@@ -3,12 +3,18 @@ import "./index.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
-import { Provider } from "./context/ProjectContext.jsx";
+import { ProviderTimer } from "./context/TimerContext.jsx";
+import { ProviderProject } from "./context/ProjectContext.jsx";
+import { ProviderUser } from "./context/UserContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <Provider>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  </Provider>
+  <React.StrictMode>
+    <ProviderUser>
+      <ProviderTimer>
+        <ProviderProject>
+          <App />
+        </ProviderProject>
+      </ProviderTimer>
+    </ProviderUser>
+  </React.StrictMode>
 );

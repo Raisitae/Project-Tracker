@@ -3,7 +3,7 @@ import { formatTime } from "./FormatTime.jsx";
 import { SaveTime } from "./SaveTime.jsx";
 import { useTimerContext } from "../../hooks/useTimerContext.jsx";
 
-export function Timer({ title }) {
+export function Timer() {
   const {
     resetTimer,
     time,
@@ -12,6 +12,7 @@ export function Timer({ title }) {
     setTimerOn,
     setTimeDisplay,
     timeDisplay,
+    project,
   } = useTimerContext();
 
   useEffect(() => {
@@ -50,8 +51,7 @@ export function Timer({ title }) {
         style={{ margin: "0 10px 0 0" }}>
         Reset
       </button>
-
-      <SaveTime title={title} time={time} />
+      <SaveTime title={project} time={time} />
     </div>
   );
 }

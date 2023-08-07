@@ -39,7 +39,8 @@ function ProviderTimer({ children }) {
   };
 
   const pushTimes = async (title) => {
-    console.log(time);
+    console.log("pushing times", times);
+    console.log(title);
     try {
       const userRef = collection(db, user, project, "timers");
       const dataSend = await addDoc(userRef, {
@@ -54,39 +55,37 @@ function ProviderTimer({ children }) {
     }
   };
 
-  const getTimes = () => {
-    const arrayTimes = [];
+  const getTimes = useCallback(async () => {
+    let arrayTimes = [];
     setTimes([]);
-    console.log("1");
     const userRef = collection(db, user, project, "timers");
-    onSnapshot(userRef, (snapshot) => {
-      snapshot.docs.map((doc) => {
-        return arrayTimes.push({
-          id: doc.id,
-          title: doc.data().title,
-          time: doc.data().time,
-          date: doc.data().date,
+    try {
+      onSnapshot(userRef, (snapshot) => {
+        arrayTimes = [];
+        snapshot.docs.forEach((doc) => {
+          return arrayTimes.push({
+            id: doc.id,
+            title: doc.data().title,
+            time: doc.data().time,
+            date: doc.data().date,
+          });
         });
+        //arrayTimes.sort((a, b) => a.title.localeCompare(b.title));
+        setTimes(arrayTimes);
+        console.log(arrayTimes);
+        console.log(times);
+        setLoading(false);
       });
-      arrayTimes.sort((a, b) => a.title.localeCompare(b.title));
-      setTimes(arrayTimes);
-      setLoading(false);
-    });
-  };
-
-  const getTimesBack = useCallback(() => {
-    if (project !== "") {
-      console.log("name", project);
-      getTimes();
+    } catch (e) {
+      console.log("Error getting document:", e);
     }
-  }, [project]);
+  }, [user, project]);
 
   useEffect(() => {
-    if (project !== undefined) {
-      console.log("1");
-      getTimesBack();
+    if (project !== undefined && project !== "") {
+      getTimes();
     }
-  }, [getTimesBack, user, project]);
+  }, [getTimes]);
 
   const value = {
     pushTimes,
@@ -99,7 +98,6 @@ function ProviderTimer({ children }) {
     setTimeDisplay,
     setTimes,
     getTimes,
-    getTimesBack,
     loading,
     setLoading,
     times,

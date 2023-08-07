@@ -25,7 +25,7 @@ export function NavbarContainer() {
         <div>
           {projects.map((project) => {
             return (
-              <div key={project.id}>
+              <div key={project.title}>
                 <button
                   onClick={() => {
                     handleClick(project.title);

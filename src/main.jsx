@@ -8,13 +8,13 @@ import { ProviderProject } from "./context/ProjectContext.jsx";
 import { ProviderUser } from "./context/UserContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <ProviderUser>
-      <ProviderTimer>
-        <ProviderProject>
-          <App />
-        </ProviderProject>
-      </ProviderTimer>
-    </ProviderUser>
-  </React.StrictMode>
+  //<React.StrictMode>
+  <ProviderUser>
+    <ProviderTimer>
+      <ProviderProject>
+        <App />
+      </ProviderProject>
+    </ProviderTimer>
+  </ProviderUser>
+  //</React.StrictMode>
 );

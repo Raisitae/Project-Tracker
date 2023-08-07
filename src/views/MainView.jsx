@@ -6,7 +6,6 @@ export function MainView() {
   return (
     <div className="main-page max-w-full">
       <NavbarContainer />
-
       <div className="project-container">
         <Userinfo />
         <ProjectContainer />

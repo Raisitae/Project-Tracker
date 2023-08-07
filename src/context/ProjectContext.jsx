@@ -1,6 +1,6 @@
 import { createContext, useState, useCallback, useEffect } from "react";
 import { db } from "../firebase/FirebaseConfig.jsx";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, getDocs, doc, setDoc } from "firebase/firestore";
 import { useUserContext } from "../hooks/useUserContext.jsx";
 import { useTimerContext } from "../hooks/useTimerContext.jsx";
 
@@ -13,63 +13,52 @@ function ProviderProject({ children }) {
   const { user } = useUserContext();
   const { times, project, setProject } = useTimerContext();
 
-  const getProjects = () => {
+  const getProjects = useCallback(async () => {
     const arrayProjects = [];
     const projectRef = collection(db, user);
-    onSnapshot(projectRef, (snapshot) => {
-      snapshot.docs.map((doc) => {
-        return console.log({
-          id: doc.id,
-          title: doc.data().title,
-          time: doc.data().time,
-          date: doc.data().date,
-        });
-        // arrayProjects.push({
-        //   id: doc.id,
-        //   title: doc.data().title,
-        //   time: doc.data().time,
-        //   date: doc.data().date,
-        // });
+    try {
+      const querySnapshot = await getDocs(projectRef);
+      querySnapshot.forEach((doc) => {
+        arrayProjects.push(doc.data());
       });
-      console.log(arrayProjects);
-      arrayProjects.sort((a, b) => a.title.localeCompare(b.title));
       setProjects(arrayProjects);
-      console.log(projects);
       setLoading(false);
-    });
+      console.log("get projects done");
+    } catch (e) {
+      console.log("Error getting document:", e);
+    }
+  }, [user, project]);
+
+  const pushProject = async (title) => {
+    try {
+      const docRef = doc(db, user, title);
+      console.log(docRef);
+      const docSend = await setDoc(docRef, {
+        title: title,
+      });
+      console.log("id ", docSend);
+    } catch (error) {
+      console.error("Error adding document: ", error);
+    }
   };
-  //this functions should only be called when we load the app for the first time
-  //or when we push a time to the database
-  //in order to reduce the amonut of times we call the database
-  // then we should refer to projects and map the state to get the projects
-  // or we could use local storage to save the projects.
-  // maybe do a function that gets the projects and then saves them to local storage if the user is logged
-  // and we only call the database when push a new timer or when the user logs in
-  // ill have to check tmr. Also this funtion is not working atm
 
   const selectProject = (title) => {
     setProject(title);
-    setLoading(true);
   };
 
   const handleProject = (title) => {
     setLoading(true);
     setProject(title);
+    pushProject(title);
     setProjectExists(true);
   };
 
-  const handleCallback = useCallback(() => {
-    console.log("when is this updated", project);
-    setLoading(false);
-  }, [loading, project]);
-
   useEffect(() => {
-    handleCallback();
     if (user !== "") {
       getProjects();
-      //make callback function
+      console.log("rerender projectC");
     }
-  }, [user, loading]);
+  }, [getProjects, user]);
 
   const value = {
     loading,
@@ -78,6 +67,7 @@ function ProviderProject({ children }) {
     project,
     setProject,
     getProjects,
+    pushProject,
     projects,
     projectExists,
     setProjectExists,

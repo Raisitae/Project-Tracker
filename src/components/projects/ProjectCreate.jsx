@@ -1,5 +1,7 @@
 import { useProjectContext } from "../../hooks/useProjectContext";
 import { useState } from "react";
+import { Button } from "../button/Button";
+import { Input } from "../input/Input";
 
 export function ProjectCreate() {
   const { handleProject } = useProjectContext();
@@ -21,17 +23,13 @@ export function ProjectCreate() {
         We need to create a new project, or select a new one from the menu!
       </h1>
       <form>
-        <input
-          className="border mx-2 border-gray-500"
-          type="text"
-          onChange={handleChange}
+        <Input placeholder={"Name your project"} handleChange={handleChange} />
+        <Button
+          handleClick={handleSubmit}
+          addClass={"primary"}
+          text="Create"
+          type="submit"
         />
-        <button
-          onClick={handleSubmit}
-          className="btn btn-primary bg-blue-500"
-          type="submit">
-          Create
-        </button>
       </form>
     </div>
   );

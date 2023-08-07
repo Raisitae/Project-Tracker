@@ -1,6 +1,12 @@
 import { createContext, useState, useCallback, useEffect } from "react";
 import { db } from "../firebase/FirebaseConfig.jsx";
-import { collection, getDocs, doc, setDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  doc,
+  setDoc,
+  deleteDoc,
+} from "firebase/firestore";
 import { useUserContext } from "../hooks/useUserContext.jsx";
 import { useTimerContext } from "../hooks/useTimerContext.jsx";
 
@@ -10,6 +16,9 @@ function ProviderProject({ children }) {
   const [loading, setLoading] = useState(true);
   const [projects, setProjects] = useState([]);
   const [projectExists, setProjectExists] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [editedProject, setEditedProject] = useState("");
+
   const { user } = useUserContext();
   const { times, project, setProject } = useTimerContext();
 
@@ -29,6 +38,19 @@ function ProviderProject({ children }) {
     }
   }, [user, project]);
 
+  const deleteProject = async () => {
+    console.log(project);
+    try {
+      const docRef = doc(db, user, project);
+      console.log(docRef);
+      const docSend = await deleteDoc(docRef);
+      setProject("");
+      return docSend;
+    } catch (error) {
+      return error;
+    }
+  };
+
   const pushProject = async (title) => {
     try {
       const docRef = doc(db, user, title);
@@ -36,9 +58,9 @@ function ProviderProject({ children }) {
       const docSend = await setDoc(docRef, {
         title: title,
       });
-      console.log("id ", docSend);
+      return docSend;
     } catch (error) {
-      console.error("Error adding document: ", error);
+      return error;
     }
   };
 
@@ -53,6 +75,19 @@ function ProviderProject({ children }) {
     setProjectExists(true);
   };
 
+  const editProject = async (newTitle) => {
+    try {
+      const docRef = doc(db, user, project);
+      console.log(docRef);
+      const docSend = await setDoc(docRef, {
+        title: newTitle,
+      });
+      setProject(newTitle);
+      return docSend;
+    } catch (error) {
+      return error;
+    }
+  };
   useEffect(() => {
     if (user !== "") {
       getProjects();
@@ -73,6 +108,11 @@ function ProviderProject({ children }) {
     setProjectExists,
     handleProject,
     selectProject,
+    deleteProject,
+    editing,
+    setEditing,
+    setEditedProject,
+    editProject,
   };
 
   return (

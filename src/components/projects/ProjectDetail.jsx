@@ -2,6 +2,7 @@ import { Timer } from "../timer/Timer";
 import { useState, useEffect } from "react";
 
 import { useTimerContext } from "../../hooks/useTimerContext.jsx";
+import { ProjectHeader } from "./ProjectHeader";
 
 export function ProjectDetail() {
   const [sum, setSum] = useState(0);
@@ -38,9 +39,8 @@ export function ProjectDetail() {
 
   return (
     <div>
-      <h1 className="text-lg">this is {project}</h1>
+      <ProjectHeader />
       <Timer />
-
       {loading ? (
         <h1>loading</h1>
       ) : (

@@ -54,6 +54,12 @@ function ProviderProject({ children }) {
   const pushProject = async (title) => {
     try {
       const docRef = doc(db, user, title);
+      //this is pushing the title as the id of the document
+      // I should push an id
+      // so it never changes
+      // bc its a document ill have to make an id for it
+      // probably it will be better to hace the function in timer context
+      // will need to correct every function that uses project/title
       console.log(docRef);
       const docSend = await setDoc(docRef, {
         title: title,

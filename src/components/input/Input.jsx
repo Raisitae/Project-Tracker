@@ -1,4 +1,4 @@
-export function Input({ type, id, placeholder, handleChange, addClass }) {
+export function Input({ type, value, id, placeholder, handleChange, addClass }) {
   return (
     <input
       type={type}
@@ -6,6 +6,7 @@ export function Input({ type, id, placeholder, handleChange, addClass }) {
       placeholder={placeholder}
       onChange={handleChange}
       className={`input-form ${addClass}`}
+      value={value}
     />
   );
 }

@@ -14,7 +14,9 @@ function App() {
   }, []);
 
   return (
-    <div className="root">{user === "" ? <LoginView /> : <MainView />}</div>
+    <div className="root">
+      {user === "" ? <LoginView screenLogin={true} /> : <MainView />}
+    </div>
   );
 }
 
